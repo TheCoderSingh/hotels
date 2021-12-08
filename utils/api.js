@@ -3,7 +3,6 @@ import axios from "axios";
 export const baseUrl = "https://hotels4.p.rapidapi.com";
 
 export const getData = async (url) => {
-	console.log("called");
 	const { data } = await axios.get(url, {
 		headers: {
 			"x-rapidapi-host": "hotels4.p.rapidapi.com",
