@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Box } from "@chakra-ui/react";
 
 import Navbar from "../components/Navbar";
+import LocationBar from "../components/LocationBar";
 
 export default function Home() {
 	return (
@@ -21,7 +22,9 @@ export default function Home() {
 					<Navbar />
 				</header>
 
-				<main>Hello, world!</main>
+				<main>
+					<LocationBar />
+				</main>
 
 				<footer></footer>
 			</Box>
