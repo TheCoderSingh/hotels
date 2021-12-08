@@ -1,20 +1,27 @@
 import ReactDatePicker from "react-datepicker";
+import { useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Input, Select } from "@chakra-ui/react";
+import { Button, Input, Select } from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const LocationBar = () => {
+	const [location, setLocation] = useState("");
+	const [numOfAdults, setNumOfAdults] = useState(0);
+	const [numOfChildren, setNumOfChildren] = useState(0);
+	const [checkInDate, setCheckInDate] = useState(new Date());
+	const [checkOutDate, setCheckOutDate] = useState(new Date());
+
 	return (
 		<Box
-			maxW="978"
+			maxW="1278"
 			margin="40px auto 0 auto"
-			bg="#ed5a5a"
 			p="3"
 			borderRadius="6"
+			textAlign="center"
 		>
-			<Flex alignItems="center" justifyContent="center" color="#fff">
+			<Flex alignItems="center" justifyContent="center">
 				<Text>Search hotels in</Text>
 				<Input
 					w="120px"
@@ -27,34 +34,54 @@ const LocationBar = () => {
 					borderLeft="none"
 					focusBorderColor="none"
 					borderRadius="0"
+					onChange={(e) => setLocation(e.target.value)}
+					value={location}
 				/>
 				<Text>for</Text>
-				<Select placeholder="0" w="70px" ml="2" mr="2">
+				<Select
+					placeholder="0"
+					w="70px"
+					ml="2"
+					mr="2"
+					onChange={(e) => setNumOfAdults(e.target.value)}
+					value={numOfAdults}
+				>
 					<option value="1">1</option>
 					<option value="2">2</option>
 				</Select>
 				<Text>adults and</Text>
-				<Select placeholder="0" w="70px" ml="2" mr="2">
+				<Select
+					placeholder="0"
+					w="70px"
+					ml="2"
+					mr="2"
+					onChange={(e) => setNumOfChildren(e.target.value)}
+					value={numOfChildren}
+				>
 					<option value="1">1</option>
 					<option value="2">2</option>
 				</Select>
-				<Text>children.</Text>
-			</Flex>
-			<Flex alignItems="center" justifyContent="center" mt="3">
-				<CalendarIcon mr="2" color="#fff" />
+				<Text>children from</Text>
+				<CalendarIcon mr="2" ml="2" />
 				<Box alignItems="center">
 					<ReactDatePicker
 						minDate={new Date()}
 						placeholderText="Check-in Date"
+						selected={checkInDate}
+						onChange={(date) => setCheckInDate(date)}
 					/>
 				</Box>
-				<CalendarIcon mr="2" color="#fff" />
+				<Text ml="4">to</Text>
+				<CalendarIcon mr="2" ml="4" />
 				<Box>
 					<ReactDatePicker
 						minDate={new Date()}
 						placeholderText="Check-out Date"
+						selected={checkOutDate}
+						onChange={(date) => setCheckOutDate(date)}
 					/>
 				</Box>
+				<Button ml="3">Search</Button>
 			</Flex>
 		</Box>
 	);
