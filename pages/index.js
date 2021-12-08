@@ -1,8 +1,12 @@
 import Head from "next/head";
 
+import { Box } from "@chakra-ui/react";
+
+import Navbar from "../components/Navbar";
+
 export default function Home() {
 	return (
-		<div>
+		<Box>
 			<Head>
 				<title>Hotels</title>
 				<meta
@@ -12,9 +16,15 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>Hello, world!</main>
+			<Box>
+				<header>
+					<Navbar />
+				</header>
 
-			<footer></footer>
-		</div>
+				<main>Hello, world!</main>
+
+				<footer></footer>
+			</Box>
+		</Box>
 	);
 }
