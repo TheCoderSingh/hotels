@@ -40,10 +40,6 @@ export async function getStaticProps() {
 		`${baseUrl}/properties/list?destinationId=1506246&pageNumber=1&pageSize=12&checkIn=2021-12-08&checkout=2021-12-10&adults1=1`
 	);
 
-	const hotelPhotos = await getData(
-		`${baseUrl}/properties/get-hotel-photos?id=1506246}`
-	);
-
 	return {
 		props: {
 			hotels: hotels.data.body.searchResults.results,
