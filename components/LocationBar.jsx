@@ -1,7 +1,8 @@
 import ReactDatePicker from "react-datepicker";
+import Link from "next/link";
 import { useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Button, Input, Select } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/layout";
+import { Box, Flex, Input, Select } from "@chakra-ui/react";
 import { CalendarIcon } from "@chakra-ui/icons";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -81,7 +82,20 @@ const LocationBar = () => {
 						onChange={(date) => setCheckOutDate(date)}
 					/>
 				</Box>
-				<Button ml="3">Search</Button>
+				<Link href="#" ml="3">
+					<Box
+						bg="gray.200"
+						p={3}
+						w="80px"
+						h="40px"
+						borderRadius={6}
+						pt={2}
+						ml={3}
+						cursor="pointer"
+					>
+						Search
+					</Box>
+				</Link>
 			</Flex>
 		</Box>
 	);

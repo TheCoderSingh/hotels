@@ -1,13 +1,24 @@
 import SimpleImageSlider from "react-simple-image-slider";
 import Image from "next/image";
 import { Box, Heading, Text } from "@chakra-ui/layout";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import Navbar from "../../components/Navbar";
-import { baseUrl, getData } from "../../utils/api";
 import LocationImage from "../../assets/location.png";
+import { baseUrl, getData } from "../../utils/api";
+import ReactStars from "react-rating-stars-component";
 
 const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
+	const {
+		overview,
+		propertyDescription,
+		guestReviews,
+		atAGlance,
+		amenities,
+		hygieneAndCleanliness,
+		smallPrint,
+	} = hotelDetails.data.body;
+
 	const images = hotelPhotos.hotelImages.slice(0, 10).map((image) => ({
 		url: image.baseUrl.replace("{size}", "z"),
 	}));
@@ -15,80 +26,221 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 	return (
 		<Box>
 			<Navbar />
-			<Box m="25px auto 0 auto" w="896px">
+			<Box maxW="70%" m="40px auto 0 auto">
 				<Heading as="h3" mb={3}>
-					{hotelDetails.data.body.propertyDescription.name}
+					{propertyDescription.name}
 				</Heading>
-				<SimpleImageSlider
-					width={896}
-					height={504}
-					images={images}
-					showBullets={true}
-					showNavs={true}
-				/>
-				<Box cursor="pointer">
-					<a
-						href={
-							hotelDetails.data.body.propertyDescription.mapWidget
-								.staticMapUrl
-						}
-						target="_blank"
-					>
-						<Flex alignItems="center" mt={3}>
-							<Image
-								src={LocationImage}
-								width="30px"
-								height="28px"
-							/>
-							<Text color="#777" fontSize="0.8em">
-								{
-									hotelDetails.data.body.propertyDescription
-										.address.fullAddress
+				<hr />
+				<Flex mt={6} justifyContent="center">
+					<Box>
+						<SimpleImageSlider
+							width={696}
+							height={400}
+							images={images}
+							showBullets={true}
+							showNavs={true}
+						/>
+						<Box cursor="pointer">
+							<a
+								href={
+									propertyDescription.mapWidget.staticMapUrl
 								}
-							</Text>
-						</Flex>
-					</a>
-				</Box>
-				<Box mt={4}>
-					<Flex wrap="wrap" justifyContent="space-between">
-						{hotelDetails.data.body.overview.overviewSections.map(
-							(amenity) => (
-								<Box>
-									<Heading fontSize="18px">
-										{amenity.title}
-									</Heading>
-									<Text>
-										{amenity.content.map((amenity) => (
-											<Text>- {amenity}</Text>
-										))}
+								target="_blank"
+							>
+								<Flex alignItems="center" mt={3}>
+									<Image
+										src={LocationImage}
+										width="30px"
+										height="28px"
+									/>
+									<Text color="#777" fontSize="0.8em">
+										{
+											propertyDescription.address
+												.fullAddress
+										}
 									</Text>
-								</Box>
-							)
-						)}
-					</Flex>
-				</Box>
-				<Box mt={5}>
-					<Heading fontSize="24px" mb={1}>
-						Hotel Amenities
-					</Heading>
-					<hr />
-					<Flex justifyContent="space-between">
-						{hotelDetails.data.body.amenities[0].listItems.map(
-							(amenity) => (
-								<Box mt={3}>
-									<Heading fontSize={18}>
-										{amenity.heading}
-									</Heading>
-									{amenity.listItems.map((amenity) => (
-										<Text fontSize="0.8em">
-											- {amenity}
-										</Text>
+								</Flex>
+							</a>
+							<Flex alignItems="center">
+								<ReactStars
+									count={10}
+									edit={false}
+									isHalf
+									value={eval(
+										guestReviews.brands.formattedRating
+									)}
+								/>
+								<Text ml={1} fontSize="0.8em">
+									{guestReviews.brands.formattedRating}/
+									{guestReviews.brands.formattedScale}
+								</Text>
+							</Flex>
+						</Box>
+					</Box>
+					<Box ml={10} mt={3}>
+						<Heading fontSize="18px">
+							{overview.overviewSections[0].title}
+						</Heading>
+						{overview.overviewSections[0].content.map((amenity) => (
+							<Text lineHeight="1.8em">- {amenity}</Text>
+						))}
+					</Box>
+				</Flex>
+				<Grid templateColumns="30% 30% 40%">
+					<GridItem justifySelf="center">
+						<Heading fontSize="1.4em">At a Glance</Heading>
+						<hr />
+						<Text>
+							Check-in Time:
+							{atAGlance.keyFacts.arrivingLeaving[0].replace(
+								"Check-in time",
+								""
+							)}
+						</Text>
+						<Text>
+							Check-out Time:
+							{atAGlance.keyFacts.arrivingLeaving[1].replace(
+								"Check-out time is",
+								""
+							)}
+						</Text>
+						<Box mt={2}>
+							<Heading fontSize="1em">
+								Check-in Instructions
+							</Heading>
+
+							{atAGlance.keyFacts.specialCheckInInstructions.map(
+								(instruction) => (
+									<Text>{instruction}</Text>
+								)
+							)}
+						</Box>
+						<Box mt={2}>
+							<Heading fontSize="1em">
+								Required at check-in
+							</Heading>
+							{atAGlance.keyFacts.requiredAtCheckIn.map(
+								(requirement) => (
+									<Text>- {requirement}</Text>
+								)
+							)}
+						</Box>
+					</GridItem>
+					<GridItem justifySelf="center">
+						<Box>
+							<Heading fontSize="1.4em">
+								Travelling/Internet
+							</Heading>
+							<hr />
+							{Object.values(
+								atAGlance.travellingOrInternet.travelling
+							).map((item) =>
+								item.length !== 0 ? <Text>- {item}</Text> : null
+							)}
+							{Object.values(
+								atAGlance.travellingOrInternet.internet
+							).map((item) =>
+								item.length !== 0 ? <Text>- {item}</Text> : null
+							)}
+						</Box>
+						<Box mt={3}>
+							<Heading fontSize="1.4em">
+								Other Information
+							</Heading>
+							<Text>
+								-{" "}
+								{atAGlance.transportAndOther.transport.parking}
+							</Text>
+							<Text>
+								- {atAGlance.transportAndOther.otherInformation}
+							</Text>
+						</Box>
+					</GridItem>
+					<GridItem justifySelf="center">
+						<Heading fontSize="1.4em">Amenities</Heading>
+						<hr />
+						<Flex>
+							<Box>
+								<Heading fontSize="1em">
+									{amenities[0].heading}
+								</Heading>
+
+								<Box>
+									{amenities[0].listItems.map((item) => (
+										<Box>
+											<Heading fontSize="0.9em">
+												{item.heading}
+											</Heading>
+											<Text>
+												{item.listItems.map(
+													(amenity) => (
+														<Text>- {amenity}</Text>
+													)
+												)}
+											</Text>
+										</Box>
 									))}
 								</Box>
+							</Box>
+
+							<Box>
+								<Heading fontSize="1em">
+									{amenities[1].heading}
+								</Heading>
+
+								<Box>
+									{amenities[1].listItems.map((item) => (
+										<Box>
+											<Heading fontSize="0.9em">
+												{item.heading}
+											</Heading>
+											<Text>
+												{item.listItems.map(
+													(amenity) => (
+														<Text>- {amenity}</Text>
+													)
+												)}
+											</Text>
+										</Box>
+									))}
+								</Box>
+							</Box>
+						</Flex>
+					</GridItem>
+					<GridItem justifySelf="center">
+						<Heading fontSize="1.4em">
+							{hygieneAndCleanliness.title}
+						</Heading>
+						<hr />
+						<Text>
+							{
+								hygieneAndCleanliness.healthAndSafetyMeasures
+									.description
+							}
+						</Text>
+						<Heading fontSize="0.9em">Measures</Heading>
+						{hygieneAndCleanliness.healthAndSafetyMeasures.measures.map(
+							(measure) => (
+								<Text>- {measure}</Text>
 							)
 						)}
-					</Flex>
-				</Box>
+					</GridItem>
+					<GridItem justifySelf="center">
+						<Heading fontSize="1.4em">Policies</Heading>
+						<hr />
+						{smallPrint.mandatoryFees.map((fee) => (
+							<Text>- {fee.replace(/(<([^>]+)>)/gi, "")}</Text> // Strip out HTML tags
+						))}
+
+						{smallPrint.optionalExtras.map((extra) => (
+							<Text>- {extra.replace(/(<([^>]+)>)/gi, "")}</Text>
+						))}
+
+						{smallPrint.policies.map((policy) => (
+							<Text>- {policy.replace(/(<([^>]+)>)/gi, "")}</Text>
+						))}
+					</GridItem>
+				</Grid>
 			</Box>
 		</Box>
 	);
