@@ -46,6 +46,7 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 									propertyDescription.mapWidget.staticMapUrl
 								}
 								target="_blank"
+								rel="noreferrer"
 							>
 								<Flex alignItems="center" mt={3}>
 									<Image
@@ -81,9 +82,13 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 						<Heading fontSize="18px">
 							{overview.overviewSections[0].title}
 						</Heading>
-						{overview.overviewSections[0].content.map((amenity) => (
-							<Text lineHeight="1.8em">- {amenity}</Text>
-						))}
+						{overview.overviewSections[0].content.map(
+							(amenity, index) => (
+								<Text lineHeight="1.8em" key={index}>
+									- {amenity}
+								</Text>
+							)
+						)}
 					</Box>
 				</Flex>
 				<Grid templateColumns="30% 30% 40%">
@@ -110,8 +115,8 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 							</Heading>
 
 							{atAGlance.keyFacts.specialCheckInInstructions.map(
-								(instruction) => (
-									<Text>{instruction}</Text>
+								(instruction, index) => (
+									<Text key={index}>{instruction}</Text>
 								)
 							)}
 						</Box>
@@ -120,8 +125,8 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 								Required at check-in
 							</Heading>
 							{atAGlance.keyFacts.requiredAtCheckIn.map(
-								(requirement) => (
-									<Text>- {requirement}</Text>
+								(requirement, index) => (
+									<Text key={index}>- {requirement}</Text>
 								)
 							)}
 						</Box>
@@ -134,13 +139,17 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 							<hr />
 							{Object.values(
 								atAGlance.travellingOrInternet.travelling
-							).map((item) =>
-								item.length !== 0 ? <Text>- {item}</Text> : null
+							).map((item, index) =>
+								item.length !== 0 ? (
+									<Text key={index}>- {item}</Text>
+								) : null
 							)}
 							{Object.values(
 								atAGlance.travellingOrInternet.internet
-							).map((item) =>
-								item.length !== 0 ? <Text>- {item}</Text> : null
+							).map((item, index) =>
+								item.length !== 0 ? (
+									<Text key={index}>- {item}</Text>
+								) : null
 							)}
 						</Box>
 						<Box mt={3}>
@@ -166,20 +175,24 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 								</Heading>
 
 								<Box>
-									{amenities[0].listItems.map((item) => (
-										<Box>
-											<Heading fontSize="0.9em">
-												{item.heading}
-											</Heading>
-											<Text>
-												{item.listItems.map(
-													(amenity) => (
-														<Text>- {amenity}</Text>
-													)
-												)}
-											</Text>
-										</Box>
-									))}
+									{amenities[0].listItems.map(
+										(item, index) => (
+											<Box key={index}>
+												<Heading fontSize="0.9em">
+													{item.heading}
+												</Heading>
+												<Text>
+													{item.listItems.map(
+														(amenity, index) => (
+															<Text key={index}>
+																- {amenity}
+															</Text>
+														)
+													)}
+												</Text>
+											</Box>
+										)
+									)}
 								</Box>
 							</Box>
 
@@ -189,20 +202,24 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 								</Heading>
 
 								<Box>
-									{amenities[1].listItems.map((item) => (
-										<Box>
-											<Heading fontSize="0.9em">
-												{item.heading}
-											</Heading>
-											<Text>
-												{item.listItems.map(
-													(amenity) => (
-														<Text>- {amenity}</Text>
-													)
-												)}
-											</Text>
-										</Box>
-									))}
+									{amenities[1].listItems.map(
+										(item, index) => (
+											<Box key={index}>
+												<Heading fontSize="0.9em">
+													{item.heading}
+												</Heading>
+												<Text>
+													{item.listItems.map(
+														(amenity, i) => (
+															<Text key={i}>
+																- {amenity}
+															</Text>
+														)
+													)}
+												</Text>
+											</Box>
+										)
+									)}
 								</Box>
 							</Box>
 						</Flex>
@@ -220,24 +237,30 @@ const HotelDetails = ({ hotelDetails, hotelPhotos }) => {
 						</Text>
 						<Heading fontSize="0.9em">Measures</Heading>
 						{hygieneAndCleanliness.healthAndSafetyMeasures.measures.map(
-							(measure) => (
-								<Text>- {measure}</Text>
+							(measure, index) => (
+								<Text key={index}>- {measure}</Text>
 							)
 						)}
 					</GridItem>
 					<GridItem justifySelf="center">
 						<Heading fontSize="1.4em">Policies</Heading>
 						<hr />
-						{smallPrint.mandatoryFees.map((fee) => (
-							<Text>- {fee.replace(/(<([^>]+)>)/gi, "")}</Text> // Strip out HTML tags
+						{smallPrint.mandatoryFees.map((fee, index) => (
+							<Text key={index}>
+								- {fee.replace(/(<([^>]+)>)/gi, "")}
+							</Text> // Strip out HTML tags
 						))}
 
-						{smallPrint.optionalExtras.map((extra) => (
-							<Text>- {extra.replace(/(<([^>]+)>)/gi, "")}</Text>
+						{smallPrint.optionalExtras.map((extra, index) => (
+							<Text key={index}>
+								- {extra.replace(/(<([^>]+)>)/gi, "")}
+							</Text>
 						))}
 
-						{smallPrint.policies.map((policy) => (
-							<Text>- {policy.replace(/(<([^>]+)>)/gi, "")}</Text>
+						{smallPrint.policies.map((policy, index) => (
+							<Text key={index}>
+								- {policy.replace(/(<([^>]+)>)/gi, "")}
+							</Text>
 						))}
 					</GridItem>
 				</Grid>
